@@ -1,0 +1,119 @@
+﻿@using WM.WebApp.MVC.Extensions
+@model IEnumerable<WM.WebApp.MVC.Models.VehicleViewModel>
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div style="z-index: 26; margin: 20px auto 32px; padding: 20px 30px; max-width: 1024px; min-width: 800px; width: 100%; -webkit-box-shadow: 0 8px 20px 0 rgba(158,184,209,.43); box-shadow: 0 8px 20px 0 rgba(158,184,209,.43);">
+        <div class="container" style="padding-top: 10px">
+            <div class="row">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <div class="col-md-3">
+                            <div href="#" class="card card-product-grid" style="height: 23rem;">
+                                <img  class="img-wrap" src="@item.Image" alt=@item.Image>
+
+                                <figcaption class="info-wrap">
+                                    <b>@item.Make</b>
+                                    <b>@item.Model</b>
+                                    <br />
+
+                                    <small class="card-text">
+                                        @item.Version 
+                                    </small>
+                                    <br />
+
+                                    <small class="card-text" style="display: flex; flex-wrap: wrap;">
+                                        <span style="margin-right:35%;">@item.YearModel/@item.YearFab</span>
+                                        <span>@item.KM KM</span>
+                                    </small>
+
+                                </figcaption>
+                                <div class="card-footer price mt-1">
+                                    <h3>@this.FormatoMoeda(@item.Price)</h3>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.UrlEncoder(model => model.Make)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Version)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KM)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearModel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearFab)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Color)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Make)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KM)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.YearModel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.YearFab)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@

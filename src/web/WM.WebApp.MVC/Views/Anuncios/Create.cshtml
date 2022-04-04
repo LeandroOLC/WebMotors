@@ -1,0 +1,161 @@
+﻿@model WM.WebApp.MVC.Models.AnunciosViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Cadastre seu anúncio</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @Html.HiddenFor(c => c.Make, new { id = "selectedBrand" })
+            @Html.HiddenFor(c => c.Model, new { id = "selectedModel" })
+            @Html.HiddenFor(c => c.Version, new { id = "selectedVersions" })
+
+            <div class="form-group">
+                <label for="brand">Marca:</label>
+                <select id="brand" class="form-control">
+                    <option id="0">Selecione</option>
+                    @foreach (var item in Model.Makes)
+                    {
+                        <option id="@item.ID">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Make" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="model">Modelo:</label>
+                <select id="model" class="form-control">
+                    <option id="0">Selecione</option>
+                    @foreach (var item in Model.Models)
+                    {
+                        <option id="@item.ID">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="version">Versões:</label>
+                <select id="version" class="form-control">
+                    <option id="0">Selecione</option>
+                    @foreach (var item in Model.Versions)
+                    {
+                        <option id="@item.ID">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Version" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mileage" class="control-label"></label>
+                <input asp-for="Mileage" class="form-control" />
+                <span asp-validation-for="Mileage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note" class="control-label"></label>
+                <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    $(function () {
+
+        $("#brand").change(function () {
+            var brandId = $("#brand option:selected").attr("id");
+            if (brandId > 0) {
+                $.ajax({
+                    url: "/Anuncios/GetModels?id=" + brandId,
+                    success: function (result) {
+                        $('#model').html("<option id='0'>Selecione</option>")
+
+                        $.each(result, function (i, item) {
+                            var option = '<option id="' + item.id + '">' + item.name + '</option>';
+                            $('#model').append(option);
+                        });
+
+                        if ($("#selectedModel").val() != "0" && $("#selectedModel").val() != 0) {
+                            $('#model').val($("#selectedModel").val()).change();
+                        }
+                    }
+                });
+
+                var brand = $("#brand option:selected").val();
+                $("#selectedBrand").val(brand);
+            }
+        });
+
+        $("#model").change(function () {
+            var modelId = $("#model option:selected").attr("id");
+
+            if (modelId > 0) {
+                var model = $("#model option:selected").val();
+                $("#selectedModel").val(model);
+            }
+        });
+
+        $("#model").change(function () {
+            var versionId = $("#model option:selected").attr("id");
+            if (versionId > 0) {
+                $.ajax({
+                    url: "/Anuncios/GetVersion?id=" + versionId,
+                    success: function (result) {
+                        $('#version').html("<option id='0'>Selecione</option>")
+
+                        $.each(result, function (i, item) {
+                            var option = '<option id="' + item.id + '">' + item.name + '</option>';
+                            $('#version').append(option);
+                        });
+
+                        if ($("#selectedVersions").val() != "0" && $("#selectedVersions").val() != 0) {
+                            $('#version').val($("#selectedVersions").val()).change();
+                        }
+                    }
+                });
+
+                var brand = $("#model option:selected").val();
+                $("#selectedModel").val(brand);
+            }
+        });
+
+        $("#version").change(function () {
+            var modelId = $("#version option:selected").attr("id");
+            if (modelId > 0) {
+                var model = $("#version option:selected").val();
+                $("#selectedVersions").val(model);
+            }
+        });
+
+
+        if ($("#selectedBrand").val() != "0" && $("#selectedBrand").val() != 0) {
+            $('#brand').val($("#selectedBrand").val()).change();
+        }
+    });
+
+ </script>
+  
+}
